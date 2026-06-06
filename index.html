@@ -1174,6 +1174,83 @@ document.getElementById('login-screen').style.display = 'none';
       document.getElementById('login-pass').value = '';
     }
 
+    function renderLeaderboard() {
+  const leaderboardBody = document.getElementById('leaderboard-body');
+  if (!leaderboardBody) return;
+
+  let playersStats = [];
+
+  Object.keys(appData.players).forEach(uid => {
+    const player = appData.players[uid];
+    if (player.name === "Admin") return;
+
+    let oynanan = 0;
+    let dogruTahmin = 0;
+    let kazananBeraberlik = 0;
+    let bilemedi = 0;
+    let toplamPuan = 0;
+
+    if (appData.predictions && appData.predictions[uid]) {
+      const userPreds = appData.predictions[uid];
+
+      Object.keys(userPreds).forEach(mid => {
+        const pred = userPreds[mid];
+        if (appData.results && appData.results[mid]) {
+          const res = appData.results[mid];
+          oynanan++;
+
+          if (pred.hScore === res.home && pred.aScore === res.away) {
+            dogruTahmin++;
+            toplamPuan += 3; 
+          } else if (
+            (pred.hScore > pred.aScore && res.home > res.away) || 
+            (pred.hScore < pred.aScore && res.home < res.away) || 
+            (pred.hScore === pred.aScore && res.home === res.away)  
+          ) {
+            kazananBeraberlik++;
+            toplamPuan += 1; 
+          } else {
+            bilemedi++;
+          }
+        }
+      });
+    }
+
+    playersStats.push({
+      name: player.name,
+      O: oynanan,
+      DT: dogruTahmin,
+      KB: kazananBeraberlik,
+      BM: bilemedi,
+      P: toplamPuan
+    });
+  });
+
+  playersStats.sort((a, b) => {
+    if (b.P !== a.P) return b.P - a.P;
+    return b.DT - a.DT; 
+  });
+
+  let html = '';
+  playersStats.forEach((p, index) => {
+    let rowStyle = '';
+    if (index === 0) rowStyle = 'style="background: rgba(234, 179, 8, 0.05);"'; 
+    
+    html += `
+      <tr ${rowStyle}>
+        <td style="text-align: center; font-weight: bold; color: var(--primary);">${index + 1}</td>
+        <td style="font-weight: 600;">${p.name}</td>
+        <td style="text-align: center;">${p.O}</td>
+        <td style="text-align: center; color: #22c55e; font-weight: bold;">${p.DT}</td>
+        <td style="text-align: center; color: var(--primary);">${p.KB}</td>
+        <td style="text-align: center; color: var(--danger);">${p.BM}</td>
+        <td style="text-align: center; font-weight: bold; color: #fff; background: rgba(255,255,255,0.03);">${p.P}</td>
+      </tr>
+    `;
+  });
+
+  leaderboardBody.innerHTML = html || '<tr><td colspan="7" style="text-align:center; color:var(--dark-muted);">Henüz kayıtlı oyuncu veya tamamlanmış maç yok.</td></tr>';
+}
     // ==================== TAB MANAGEMENT ====================
     function switchMainTab(e, tabId) {
       document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
