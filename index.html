@@ -1408,19 +1408,36 @@ document.getElementById('login-screen').style.display = 'none';
         }
 
         // Diğer oyuncuların tahminlerini listele (Transparanlık sağlar)
-        let allPlayersPredsHtml = '';
+      let allPlayersPredsHtml = '';
         let predRows = '';
-        Object.keys(appData.predictions).forEach(uid => {
-          if (uid === currentUser.id) return; // Kendisini atla
-          const pData = appData.predictions[uid][m.id];
-          if (pData) {
-            predRows += `
-              <div class="prediction-row">
-                <span class="pred-player">${appData.players[uid].name}</span>
-                <span class="pred-score">${pData.hScore} - ${pData.aScore}</span>
-              </div>`;
-          }
-        });
+        
+        if (appData.predictions) {
+          Object.keys(appData.predictions).forEach(uid => {
+            if (currentUser && uid === currentUser.id) return; // Kendisini atla
+            if (!appData.players[uid]) return; // Oyuncu silindiyse veya yoksa atla
+            
+            const userPreds = appData.predictions[uid];
+            if (userPreds && userPreds[m.id]) {
+              const pData = userPreds[m.id];
+              // hScore ve aScore verilerinin varlığından emin oluyoruz
+              if (pData.hScore !== undefined && pData.aScore !== undefined) {
+                predRows += `
+                  <div class="prediction-row" style="display:flex; justify-content:space-between; padding:4px 0; border-bottom:1px solid rgba(255,255,255,0.02);">
+                    <span class="pred-player" style="color:var(--dark-muted); font-size:0.85rem;">${appData.players[uid].name}</span>
+                    <span class="pred-score" style="color:var(--primary); font-weight:600; font-size:0.85rem;">${pData.hScore} - ${pData.aScore}</span>
+                  </div>`;
+              }
+            }
+          });
+        }
+
+        if (predRows) {
+          allPlayersPredsHtml = `
+            <div class="predictions-list" style="margin-top:12px; padding-top:10px; border-top:1px solid rgba(255,255,255,0.05);">
+              <div class="predictions-title" style="font-size:0.75rem; color:var(--dark-muted); font-weight:700; margin-bottom:6px; text-transform:uppercase;">DİĞER OYUNCULARIN TAHMİNLERİ</div>
+              ${predRows}
+            </div>`;
+        }
 
         if (predRows) {
           allPlayersPredsHtml = `
@@ -1506,6 +1523,26 @@ document.getElementById('login-screen').style.display = 'none';
     // ==================== ADMIN CORE PANEL FUNCTIONS ====================
     function renderAdminPanel() {
       let html = '';
+      let playerManagerHtml = `
+        <div class="card" style="border: 1px solid var(--danger); margin-bottom:25px; background: rgba(239, 68, 68, 0.02);">
+          <div class="card-title" style="color:var(--danger);">👥 Kayıtlı Oyuncuları Yönet</div>
+          <div style="display:flex; flex-direction:column; gap:10px; margin-top:15px;">`;
+
+      Object.keys(appData.players).forEach(uid => {
+        const pName = appData.players[uid].name;
+        if (pName === "Admin") return; // Admin hesabının kendini silmesini engelle
+
+        playerManagerHtml += `
+          <div style="display:flex; justify-content:space-between; align-items:center; padding:8px 12px; background:var(--dark-bg); border:1px solid var(--dark-border); border-radius:6px;">
+            <span style="font-weight:600;">${pName}</span>
+            <button class="btn btn-danger" onclick="deletePlayer('${uid}', '${pName}')" style="padding:4px 10px; font-size:0.75rem; background:#b91c1c;">Oyuncuyu Sil</button>
+          </div>`;
+      });
+
+      playerManagerHtml += `</div></div>`;
+      // Oyuncu listesini ana başlığın hemen altına yerleştiriyoruz
+      html += playerManagerHtml;
+      // ----------------------------------
       MATCHES.forEach(m => {
         const flagH = TEAM_FLAGS[m.h] || '🏳️';
         const flagA = TEAM_FLAGS[m.a] || '🏳️';
@@ -1552,6 +1589,24 @@ document.getElementById('login-screen').style.display = 'none';
         database.ref(`results/${mid}`).remove().then(() => {
           showToast('Maç sonucu silindi.');
         });
+      }
+    }
+    
+    function deletePlayer(uid, playerName) {
+      if (confirm(`⚠️ DİKKAT: "${playerName}" isimli oyuncuyu ve yaptığı TÜM tahminleri silmek istediğinize emin misiniz? Bu işlem geri alınamaz!`)) {
+        
+        // 1. Oyuncunun tahminlerini sil
+        database.ref(`predictions/${uid}`).remove()
+          .then(() => {
+            // 2. Oyuncunun profilini/hesabını sil
+            return database.ref(`users/${uid}`).remove();
+          })
+          .then(() => {
+            showToast(`"${playerName}" başarıyla sistemden silindi.`);
+          })
+          .catch(err => {
+            showToast("Hata oluştu: " + err.message);
+          });
       }
     }
 
