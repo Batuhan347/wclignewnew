@@ -796,6 +796,123 @@
       0% { transform: rotate(0deg); }
       100% { transform: rotate(360deg); }
     }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* ==================== PREMIUM DESKTOP MATCH CENTER ==================== */
+    @media screen and (min-width: 768px) {
+      .container, #matches-page, .app-container { 
+        max-width: 1200px !important;
+        margin: 0 auto !important;
+        padding: 20px !important;
+      }
+      .matches-list, .matches-container {
+        display: grid !important;
+        grid-template-columns: repeat(auto-fill, minmax(540px, 1fr)) !important;
+        gap: 16px !important;
+      }
+      .match-card {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        padding: 12px 20px !important;
+        height: 75px !important;
+        background: #1e2530 !important;
+        border: 1px solid rgba(255, 255, 255, 0.05) !important;
+        border-radius: 12px !important;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+        transition: transform 0.2s, border-color 0.2s !important;
+        margin-bottom: 0 !important;
+      }
+      .match-card:hover {
+        border-color: rgba(255, 255, 255, 0.15) !important;
+        transform: translateY(-2px) !important;
+      }
+      .match-info-sidebar {
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: center !important;
+        align-items: flex-start !important;
+        min-width: 75px !important;
+        border-right: 1px solid rgba(255, 255, 255, 0.1) !important;
+        padding-right: 12px !important;
+      }
+      .match-date {
+        font-size: 11px !important;
+        color: #8a99ad !important;
+        text-transform: uppercase !important;
+      }
+      .match-time {
+        font-size: 16px !important;
+        font-weight: 700 !important;
+        color: #ffffff !important;
+        margin: 2px 0 !important;
+      }
+      .match-group {
+        font-size: 10px !important;
+        background: rgba(255, 255, 255, 0.1) !important;
+        padding: 1px 6px !important;
+        border-radius: 4px !important;
+        color: #cbd5e1 !important;
+      }
+      .match-main-content {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        flex-grow: 1 !important;
+        padding: 0 20px !important;
+      }
+      .teams-flex-container {
+        display: flex !important;
+        align-items: center !important;
+        gap: 15px !important;
+        flex-grow: 1 !important;
+      }
+      .team-row {
+        display: flex !important;
+        align-items: center !important;
+        gap: 8px !important;
+        font-size: 14px !important;
+        font-weight: 600 !important;
+        width: 140px !important;
+      }
+      .team-row.home { justify-content: flex-end !important; text-align: right !important; }
+      .team-row.away { justify-content: flex-start !important; text-align: left !important; }
+      .team-flag { font-size: 20px !important; line-height: 1 !important; }
+      .match-vs { font-size: 12px !important; color: #64748b !important; font-weight: 700 !important; padding: 0 10px !important; }
+      .prediction-inputs-container { display: flex !important; align-items: center !important; gap: 6px !important; }
+      .prediction-input {
+        width: 36px !important;
+        height: 36px !important;
+        text-align: center !important;
+        font-size: 15px !important;
+        font-weight: 700 !important;
+        background: #0f141c !important;
+        border: 1px solid rgba(255, 255, 255, 0.1) !important;
+        color: #fff !important;
+        border-radius: 6px !important;
+        outline: none !important;
+        transition: border-color 0.2s !important;
+      }
+      .prediction-input:focus {
+        border-color: #3b82f6 !important;
+        box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2) !important;
+      }
+      .save-prediction-btn {
+        height: 36px !important;
+        padding: 0 12px !important;
+        font-size: 12px !important;
+        font-weight: 600 !important;
+        border-radius: 6px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+      }
+    }
+  </style>
+</head>
   </style>
 </head>
 <body>
