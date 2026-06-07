@@ -1074,6 +1074,20 @@
       {id: 'l6', h: 'Hırvatistan', a: 'Gana', g: 'L', d: '27 Haz', t: '22:00'}
     ];
 
+    // ===== KRONOLOJİK SIRALAMA MANTIĞI =====
+// Maçları önce gün (d), sonra saat (t) alanına göre artan sırada dizer.
+MATCHES.sort((a, b) => {
+  // '11 Haz' formatındaki gün değerini sayıya çevirir (Örn: 11)
+  const dayA = parseInt(a.d);
+  const dayB = parseInt(b.d);
+  
+  if (dayA !== dayB) {
+    return dayA - dayB; // Önce güne göre sırala
+  }
+  
+  // Eğer günler aynıysa saate göre sırala (Örn: '20:00' < '23:00')
+  return a.t.localeCompare(b.t);
+});
     // ==================== AUTH FUNCTIONS ====================
     function switchTab(e, form) {
       document.querySelectorAll('.form-content').forEach(f => f.classList.remove('active'));
