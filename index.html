@@ -796,9 +796,8 @@
       0% { transform: rotate(0deg); }
       100% { transform: rotate(360deg); }
     }   
- /* ==================== PREMIUM DESKTOP MATCH CENTER (KESİN ÇÖZÜM) ==================== */
+/* ==================== PREMIUM DESKTOP MATCH CENTER (SIFIR HATA) ==================== */
 @media screen and (min-width: 992px) {
-  /* Ana kapsayıcıyı ortala ve nefes aldır */
   #matches-container {
     max-width: 1300px !important;
     margin: 0 auto !important;
@@ -806,7 +805,6 @@
     display: block !important;
   }
 
-  /* Gün gruplarının başlığı */
   .match-day-header {
     font-size: 1.1rem !important;
     border-bottom: 2px solid rgba(255, 255, 255, 0.05) !important;
@@ -817,7 +815,6 @@
     display: block !important;
   }
 
-  /* Maçları yan yana 2'li düzen yap */
   .match-day-grid {
     display: grid !important;
     grid-template-columns: repeat(auto-fill, minmax(580px, 1fr)) !important;
@@ -825,19 +822,18 @@
     width: 100% !important;
   }
 
-  /* Eski dikey çizgileri ve eski esnek yapıları sıfırlıyoruz */
+  /* Eski dikey çizgileri temizle */
   .match-card::before, .match-card::after {
     display: none !important;
   }
 
-  /* Maç Kartı Masaüstü Optimizasyonu (%30 daha kompakt ve ince) */
   .match-card {
     display: flex !important;
     flex-direction: row !important;
     align-items: center !important;
     justify-content: space-between !important;
     padding: 10px 15px !important;
-    height: 85px !important; /* Dikey yükseklik azaltıldı */
+    height: 85px !important;
     min-height: 85px !important;
     max-height: 85px !important;
     margin-bottom: 0 !important;
@@ -847,7 +843,6 @@
     box-sizing: border-box !important;
   }
 
-  /* Kart içi Header (Badge ve Durum) */
   .match-card-header-zone {
     display: flex !important;
     flex-direction: column !important;
@@ -861,12 +856,11 @@
     height: 100% !important;
   }
 
-  /* Eski alt alta olan başlık düzenini sıfırla */
-  .match-card .match-header {
-    display: none !important; /* Eski mobil header'ı gizle, yenisini kullanıyoruz */
+  /* Eski mobil elemanların çakışmasını engelle */
+  .match-card .match-header, .match-card .match-teams {
+    display: none !important;
   }
 
-  /* Takımların yatay dizilimi */
   .match-main-area {
     flex: 1 !important;
     display: block !important;
@@ -881,17 +875,12 @@
     width: 100% !important;
   }
 
-  /* Eski mobil takım satırlarını ez */
-  .match-card .match-teams {
-    display: none !important;
-  }
-
   .team-block {
     display: flex !important;
     flex-direction: row !important;
     align-items: center !important;
     gap: 8px !important;
-    width: 120px !important; /* İsimlerin taşmasını engeller */
+    width: 120px !important;
     max-width: 120px !important;
     font-size: 0.9rem !important;
     font-weight: 600 !important;
@@ -902,17 +891,25 @@
   .team-flag-emoji { font-size: 1.4rem !important; display: inline-block !important; }
   .team-name-text { display: inline-block !important; white-space: nowrap !important; overflow: hidden !important; text-overflow: ellipsis !important; }
 
-  /* Skor Alanı */
   .score-center-zone {
     min-width: 60px !important;
     max-width: 60px !important;
     text-align: center !important;
   }
-  .score-center-zone .vs { font-size: 0.75rem !important; color: #64748b !important; font-weight: bold !important; line-height: 1.2 !important; margin: 0 !important; background: none !important; padding: 0 !important;}
+  
+  .score-center-zone .vs { 
+    font-size: 0.75rem !important; 
+    color: #64748b !important; 
+    font-weight: bold !important; 
+    line-height: 1.2 !important; 
+    margin: 0 !important; 
+    background: none !important; 
+    padding: 0 !important;
+  }
+  
   .score-center-zone .match-time-text { font-size: 0.85rem !important; color: #fff !important; }
   .score-center-zone .score-display { font-size: 1.2rem !important; font-weight: 800 !important; color: var(--primary) !important; }
 
-  /* Sağ Taraf: Tahmin ve Diğer Oyuncular Kutusu */
   .match-footer-area {
     display: flex !important;
     flex-direction: row !important;
@@ -925,24 +922,22 @@
     height: 100% !important;
   }
 
-  /* Eski dikey tahmin alanlarını sıfırla */
-  .match-card .pred-section:not(.finished-pred):not(.no-pred) {
-    display: none !important;
-  }
-
-  /* Yeni Tahmin Bölümü */
-  .pred-section {
-    margin: 0 !important;
-    padding: 0 !important;
+  /* Tahmin Alanını Zorla Görünür Yapıyoruz */
+  .match-card .pred-section {
     display: flex !important;
     flex-direction: column !important;
     gap: 4px !important;
+    margin: 0 !important;
+    padding: 0 !important;
     background: none !important;
     border: none !important;
+    min-width: 120px !important;
+    visibility: visible !important;
+    opacity: 1 !important;
   }
+
   .pred-section.finished-pred { font-size: 0.8rem !important; min-width: 110px !important; flex-direction: column !important; align-items: flex-start !important;}
   .pred-section.no-pred { font-size: 0.8rem !important; min-width: 110px !important; }
-
   .pred-label { font-size: 0.7rem !important; text-transform: uppercase !important; color: #64748b !important; display: block !important;}
   .pred-inputs { display: flex !important; flex-direction: row !important; align-items: center !important; gap: 4px !important; }
   
@@ -954,7 +949,12 @@
     background: #0f141c !important;
     margin: 0 !important;
     padding: 0 !important;
+    display: inline-block !important;
+    color: #fff !important;
+    border: 1px solid rgba(255,255,255,0.1) !important;
+    text-align: center !important;
   }
+  
   .score-dash { color: #64748b !important; padding: 0 2px !important; display: inline !important;}
 
   .save-prediction-btn {
@@ -964,9 +964,9 @@
     border-radius: 4px !important;
     margin-left: 4px !important;
     width: auto !important;
+    display: inline-block !important;
   }
 
-  /* Diğer Oyuncuların Tahminleri Bölümü */
   .predictions-list {
     margin: 0 !important;
     padding: 0 !important;
