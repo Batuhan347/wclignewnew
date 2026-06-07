@@ -1149,7 +1149,7 @@
           return;
         }
 
-document.getElementById('login-screen').style.display = 'none';
+        document.getElementById('login-screen').style.display = 'none';
         document.getElementById('main-app').style.display = 'block';
         document.getElementById('current-user').textContent = currentUser.name;
         
@@ -1173,83 +1173,93 @@ document.getElementById('login-screen').style.display = 'none';
       document.getElementById('login-name').value = '';
       document.getElementById('login-pass').value = '';
     }
+
     function renderLeaderboard() {
-  const leaderboardBody = document.getElementById('leaderboard-body');
-  if (!leaderboardBody) return;
+      const leaderboardBody = document.getElementById('leaderboard-body');
+      if (!leaderboardBody) return;
 
-  let playersStats = [];
+      let playersStats = [];
 
-  Object.keys(appData.players).forEach(uid => {
-    const player = appData.players[uid];
-    if (player.name === "Admin") return;
+      Object.keys(appData.players).forEach(uid => {
+        const player = appData.players[uid];
+        if (!player || !player.name || player.name === "Admin") return;
 
-    let oynanan = 0;
-    let dogruTahmin = 0;
-    let kazananBeraberlik = 0;
-    let bilemedi = 0;
-    let toplamPuan = 0;
+        let oynanan = 0;
+        let dogruTahmin = 0;
+        let kazananBeraberlik = 0;
+        let bilemedi = 0;
+        let toplamPuan = 0;
 
-    if (appData.predictions && appData.predictions[uid]) {
-      const userPreds = appData.predictions[uid];
+        if (appData.predictions && appData.predictions[uid]) {
+          const userPreds = appData.predictions[uid];
 
-      Object.keys(userPreds).forEach(mid => {
-        const pred = userPreds[mid];
-        if (appData.results && appData.results[mid]) {
-          const res = appData.results[mid];
-          oynanan++;
+          Object.keys(userPreds).forEach(mid => {
+            const pred = userPreds[mid];
+            if (appData.results && appData.results[mid]) {
+              const res = appData.results[mid];
+              
+              if (pred.hScore === undefined || pred.aScore === undefined || res.hScore === undefined || res.aScore === undefined) return;
+              if (pred.hScore === '' || pred.aScore === '' || res.hScore === '' || res.aScore === '') return;
 
-          if (pred.hScore === res.home && pred.aScore === res.away) {
-            dogruTahmin++;
-            toplamPuan += 3; 
-          } else if (
-            (pred.hScore > pred.aScore && res.home > res.away) || 
-            (pred.hScore < pred.aScore && res.home < res.away) || 
-            (pred.hScore === pred.aScore && res.home === res.away)  
-          ) {
-            kazananBeraberlik++;
-            toplamPuan += 1; 
-          } else {
-            bilemedi++;
-          }
+              oynanan++;
+              const pH = parseInt(pred.hScore);
+              const pA = parseInt(pred.aScore);
+              const rH = parseInt(res.hScore);
+              const rA = parseInt(res.aScore);
+
+              if (pH === rH && pA === rA) {
+                dogruTahmin++;
+                toplamPuan += 3; 
+              } else if (
+                (pH > pA && rH > rA) || 
+                (pH < pA && rH < rA) || 
+                (pH === pA && rH === rA)  
+              ) {
+                kazananBeraberlik++;
+                toplamPuan += 1; 
+              } else {
+                bilemedi++;
+              }
+            }
+          });
         }
+
+        playersStats.push({
+          name: player.name,
+          O: oynanan,
+          DT: dogruTahmin,
+          KB: kazananBeraberlik,
+          BM: bilemedi,
+          P: toplamPuan
+        });
       });
+
+      playersStats.sort((a, b) => {
+        if (b.P !== a.P) return b.P - a.P;
+        return b.DT - a.DT; 
+      });
+
+      let html = '';
+      playersStats.forEach((p, index) => {
+        let rowStyle = '';
+        if (index === 0) rowStyle = 'style="background: rgba(234, 179, 8, 0.05);"'; 
+        
+        html += `
+          <tr ${rowStyle}>
+            <td style="text-align: center; font-weight: bold; color: var(--primary);">${index + 1}</td>
+            <td style="font-weight: 600;">${p.name}</td>
+            <td style="text-align: center;">${p.O}</td>
+            <td style="text-align: center; color: #22c55e; font-weight: bold;">${p.DT}</td>
+            <td style="text-align: center; color: var(--primary);">${p.KB}</td>
+            <td style="text-align: center; color: var(--danger);">${p.BM}</td>
+            <td style="text-align: center; font-weight: bold; color: #fff; background: rgba(255,255,255,0.03);">${p.P}</td>
+          </tr>
+        `;
+      });
+
+      leaderboardBody.innerHTML = html || '<tr><td colspan="7" style="text-align:center; color:var(--dark-muted);">Henüz kayıtlı oyuncu veya tamamlanmış maç yok.</td></tr>';
     }
 
-    playersStats.push({
-      name: player.name,
-      O: oynanan,
-      DT: dogruTahmin,
-      KB: kazananBeraberlik,
-      BM: bilemedi,
-      P: toplamPuan
-    });
-  });
-
-  playersStats.sort((a, b) => {
-    if (b.P !== a.P) return b.P - a.P;
-    return b.DT - a.DT; 
-  });
-
-  let html = '';
-  playersStats.forEach((p, index) => {
-    let rowStyle = '';
-    if (index === 0) rowStyle = 'style="background: rgba(234, 179, 8, 0.05);"'; 
-    
-    html += `
-      <tr ${rowStyle}>
-        <td style="text-align: center; font-weight: bold; color: var(--primary);">${index + 1}</td>
-        <td style="font-weight: 600;">${p.name}</td>
-        <td style="text-align: center;">${p.O}</td>
-        <td style="text-align: center; color: #22c55e; font-weight: bold;">${p.DT}</td>
-        <td style="text-align: center; color: var(--primary);">${p.KB}</td>
-        <td style="text-align: center; color: var(--danger);">${p.BM}</td>
-        <td style="text-align: center; font-weight: bold; color: #fff; background: rgba(255,255,255,0.03);">${p.P}</td>
-      </tr>
-    `;
-  });
-
-  leaderboardBody.innerHTML = html || '<tr><td colspan="7" style="text-align:center; color:var(--dark-muted);">Henüz kayıtlı oyuncu veya tamamlanmış maç yok.</td></tr>';
-}
     // ==================== TAB MANAGEMENT ====================
     function switchMainTab(e, tabId) {
       document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
@@ -1288,23 +1298,28 @@ document.getElementById('login-screen').style.display = 'none';
       
       // Oyuncuları hazırla
       Object.keys(appData.players).forEach(uid => {
-        playerScores[uid] = { name: appData.players[uid].name, points: 0, exact: 0, outcome: 0 };
+        const pName = appData.players[uid].name;
+        if (!pName || pName === "Admin") return;
+        playerScores[uid] = { name: pName, points: 0, exact: 0, outcome: 0 };
       });
 
       // Maç sonuçlarına göre her oyuncunun tahminini puanla
       Object.keys(appData.results).forEach(mid => {
         const real = appData.results[mid];
-        if (real.hScore === undefined || real.aScore === undefined) return;
+        if (!real || real.hScore === undefined || real.aScore === undefined || real.hScore === '' || real.aScore === '') return;
 
         const rH = parseInt(real.hScore);
         const rA = parseInt(real.aScore);
         const realOutcome = rH > rA ? 1 : (rH < rA ? 2 : 0);
 
-        Object.keys(appData.predictions).forEach(uid => {
+        Object.keys(playerScores).forEach(uid => {
           const userPreds = appData.predictions[uid] || {};
           if (userPreds[mid]) {
-            const pH = parseInt(userPreds[mid].hScore);
-            const pA = parseInt(userPreds[mid].aScore);
+            const pred = userPreds[mid];
+            if (pred.hScore === undefined || pred.aScore === undefined || pred.hScore === '' || pred.aScore === '') return;
+
+            const pH = parseInt(pred.hScore);
+            const pA = parseInt(pred.aScore);
             const predOutcome = pH > pA ? 1 : (pH < pA ? 2 : 0);
 
             if (rH === pH && rA === pA) {
@@ -1333,15 +1348,31 @@ document.getElementById('login-screen').style.display = 'none';
             <div class="player-score">${p.points} Puan</div>
           </div>`;
       });
-      document.getElementById('leaderboard-list').innerHTML = html || '<div class="empty-state">Henüz oyuncu yok.</div>';
       
-      // İstatistik kutuları
-      document.getElementById('stat-players').textContent = Object.keys(appData.players).length;
-      document.getElementById('stat-matches').textContent = Object.keys(appData.results).length;
+      const lbList = document.getElementById('leaderboard-list');
+      if (lbList) lbList.innerHTML = html || '<div class="empty-state">Henüz oyuncu yok.</div>';
+      
+      // İstatistik kutuları güvenlik kontrolleri
+      const statPl = document.getElementById('stat-players');
+      const statMa = document.getElementById('stat-matches');
+      const statPr = document.getElementById('stat-predictions');
+
+      // Admin hesabı hariç gerçek oyuncu sayısı hesaplama
+      const realPlayersCount = Object.values(appData.players).filter(p => p && p.name && p.name !== "Admin").length;
+
+      if (statPl) statPl.textContent = realPlayersCount;
+      if (statMa) statMa.textContent = Object.keys(appData.results).length;
       
       let totalPreds = 0;
-      Object.values(appData.predictions).forEach(u => totalPreds += Object.keys(u).length);
-      document.getElementById('stat-predictions').textContent = totalPreds;
+      Object.keys(appData.predictions).forEach(uid => {
+        if (appData.players[uid] && appData.players[uid].name !== "Admin") {
+          totalPreds += Object.keys(appData.predictions[uid]).length;
+        }
+      });
+      if (statPr) statPr.textContent = totalPreds;
+
+      // Hem tabloyu hem kart listesini aynı anda güncel tutmak için çağırıyoruz
+      renderLeaderboard();
     }
 
     // ==================== WORLD CUP GROUPS GENERATOR ====================
@@ -1445,255 +1476,4 @@ document.getElementById('login-screen').style.display = 'none';
         
         if (realResult) {
           statusHtml = `<span class="match-status status-finished">Bitti</span>`;
-          scoreDisplayHtml = `<div class="score-display">${realResult.hScore} - ${realResult.aScore}</div>`;
-        }
-
-        // Tahmin Girdi Alanı Kontrolü (Maç bitmediyse yazabilir)
-        let predInputHtml = '';
-        if (!realResult) {
-          const hVal = userPred ? userPred.hScore : '';
-          const aVal = userPred ? userPred.aScore : '';
-          predInputHtml = `
-            <div class="pred-section">
-              <div class="pred-label">Tahmininiz:</div>
-              <div class="pred-inputs">
-                <input type="number" min="0" class="score-input" id="pred-h-${m.id}" value="${hVal}" placeholder="0">
-                <span class="score-dash">-</span>
-                <input type="number" min="0" class="score-input" id="pred-a-${m.id}" value="${aVal}" placeholder="0">
-                <button class="btn btn-primary" onclick="savePrediction('${m.id}')" style="padding:8px 12px; font-size:0.8rem; margin-left:auto;">Kaydet</button>
-              </div>
-            </div>`;
-        } else {
-          // Maç bittiyse ve kullanıcının tahmini varsa puan hesap sonucunu göster
-          if (userPred) {
-            let pts = 0;
-            let ptsClass = 'points-0';
-            const rH = parseInt(realResult.hScore); const rA = parseInt(realResult.aScore);
-            const pH = parseInt(userPred.hScore); const pA = parseInt(userPred.aScore);
-            if (rH === pH && rA === pA) { pts = 3; ptsClass = 'points-3'; }
-            else if ((rH > rA && pH > pA) || (rH < rA && pA > pH) || (rH === rA && pH === pA)) { pts = 1; ptsClass = 'points-1'; }
-            
-            predInputHtml = `
-              <div class="pred-section" style="display:flex; justify-content:space-between; align-items:center;">
-                <span>Tahmininiz: <b>${userPred.hScore} - ${userPred.aScore}</b></span>
-                <span class="pred-points ${ptsClass}">${pts} Puan Kazandın</span>
-              </div>`;
-          } else {
-            predInputHtml = `<div class="pred-section" style="color:var(--dark-muted); font-size:0.85rem;">Bu maça tahmin yapmadınız.</div>`;
-          }
-        }
-
-        // Diğer oyuncuların tahminlerini listele (Transparanlık sağlar)
-      let allPlayersPredsHtml = '';
-        let predRows = '';
-        
-        if (appData.predictions) {
-          Object.keys(appData.predictions).forEach(uid => {
-            if (currentUser && uid === currentUser.id) return; // Kendisini atla
-            if (!appData.players[uid]) return; // Oyuncu silindiyse veya yoksa atla
-            
-            const userPreds = appData.predictions[uid];
-            if (userPreds && userPreds[m.id]) {
-              const pData = userPreds[m.id];
-              // hScore ve aScore verilerinin varlığından emin oluyoruz
-              if (pData.hScore !== undefined && pData.aScore !== undefined) {
-                predRows += `
-                  <div class="prediction-row" style="display:flex; justify-content:space-between; padding:4px 0; border-bottom:1px solid rgba(255,255,255,0.02);">
-                    <span class="pred-player" style="color:var(--dark-muted); font-size:0.85rem;">${appData.players[uid].name}</span>
-                    <span class="pred-score" style="color:var(--primary); font-weight:600; font-size:0.85rem;">${pData.hScore} - ${pData.aScore}</span>
-                  </div>`;
-              }
-            }
-          });
-        }
-
-        if (predRows) {
-          allPlayersPredsHtml = `
-            <div class="predictions-list" style="margin-top:12px; padding-top:10px; border-top:1px solid rgba(255,255,255,0.05);">
-              <div class="predictions-title" style="font-size:0.75rem; color:var(--dark-muted); font-weight:700; margin-bottom:6px; text-transform:uppercase;">DİĞER OYUNCULARIN TAHMİNLERİ</div>
-              ${predRows}
-            </div>`;
-        }
-
-        if (predRows) {
-          allPlayersPredsHtml = `
-            <div class="predictions-list" style="margin-top:10px;">
-              <div class="predictions-title">Diğer Oyuncuların Tahminleri</div>
-              ${predRows}
-            </div>`;
-        }
-
-        html += `
-          <div class="match-card">
-            <div class="match-header">
-              <span class="group-badge">${m.g} Grubu</span>
-              ${statusHtml}
-            </div>
-            <div class="match-teams">
-              <div class="team" style="justify-content: flex-end;">
-                <span class="team-name">${m.h}</span>
-                <span class="team-flag">${flagH}</span>
-              </div>
-              ${scoreDisplayHtml}
-              <div class="team">
-                <span class="team-flag">${flagA}</span>
-                <span class="team-name">${m.a}</span>
-              </div>
-            </div>
-            ${predInputHtml}
-            ${allPlayersPredsHtml}
-          </div>`;
-      });
-
-      if (html !== '') html += '</div>';
-      document.getElementById('matches-container').innerHTML = html || '<div class="empty-state">Maç bulunamadı.</div>';
-    }
-
-    function savePrediction(mid) {
-      const hScore = document.getElementById(`pred-h-${mid}`).value;
-      const aScore = document.getElementById(`pred-a-${mid}`).value;
-
-      if (hScore === '' || aScore === '') {
-        showToast('Lütfen skor alanlarını doldurun!');
-        return;
-      }
-
-      database.ref(`predictions/${currentUser.id}/${mid}`).set({
-        hScore: hScore,
-        aScore: aScore
-      }).then(() => {
-        showToast('Tahmininiz başarıyla kaydedildi!');
-      });
-    }
-
-    // ==================== RENDER RESULTS TAB ====================
-    function renderResults() {
-      let activeHtml = '';
-      let allHtml = '';
-
-      MATCHES.forEach(m => {
-        const res = appData.results[m.id];
-        const flagH = TEAM_FLAGS[m.h] || '🏳️';
-        const flagA = TEAM_FLAGS[m.a] || '🏳️';
-
-        const cardContent = `
-          <div class="result-card">
-            <div style="font-size:0.75rem; color:var(--dark-muted); text-align:center; margin-bottom:5px;">${m.g} Grubu | ${m.d}</div>
-            <div class="result-teams">
-              <div class="result-team">${flagH}<br>${m.h}</div>
-              <div class="result-score">${res ? res.hScore + '-' + res.aScore : 'v'}</div>
-              <div class="result-team">${flagA}<br>${m.a}</div>
-            </div>
-          </div>`;
-
-        if (res) {
-          activeHtml += cardContent;
-        }
-        allHtml += cardContent;
-      });
-
-      document.getElementById('results-list').innerHTML = activeHtml || '<div class="empty-state" style="grid-column: 1/-1;">Henüz tamamlanmış maç yok.</div>';
-      document.getElementById('all-results').innerHTML = allHtml;
-    }
-
-    // ==================== ADMIN CORE PANEL FUNCTIONS ====================
-    function renderAdminPanel() {
-      let html = '';
-      let playerManagerHtml = `
-        <div class="card" style="border: 1px solid var(--danger); margin-bottom:25px; background: rgba(239, 68, 68, 0.02);">
-          <div class="card-title" style="color:var(--danger);">👥 Kayıtlı Oyuncuları Yönet</div>
-          <div style="display:flex; flex-direction:column; gap:10px; margin-top:15px;">`;
-
-      Object.keys(appData.players).forEach(uid => {
-        const pName = appData.players[uid].name;
-        if (pName === "Admin") return; // Admin hesabının kendini silmesini engelle
-
-        playerManagerHtml += `
-          <div style="display:flex; justify-content:space-between; align-items:center; padding:8px 12px; background:var(--dark-bg); border:1px solid var(--dark-border); border-radius:6px;">
-            <span style="font-weight:600;">${pName}</span>
-            <button class="btn btn-danger" onclick="deletePlayer('${uid}', '${pName}')" style="padding:4px 10px; font-size:0.75rem; background:#b91c1c;">Oyuncuyu Sil</button>
-          </div>`;
-      });
-
-      playerManagerHtml += `</div></div>`;
-      // Oyuncu listesini ana başlığın hemen altına yerleştiriyoruz
-      html += playerManagerHtml;
-      // ----------------------------------
-      MATCHES.forEach(m => {
-        const flagH = TEAM_FLAGS[m.h] || '🏳️';
-        const flagA = TEAM_FLAGS[m.a] || '🏳️';
-        const res = appData.results[m.id];
-        const hVal = res ? res.hScore : '';
-        const aVal = res ? res.aScore : '';
-
-        html += `
-          <div class="match-card" style="border-left: 4px solid var(--secondary);">
-            <div style="margin-bottom:10px; font-weight:700; font-size:0.9rem; color:var(--secondary);">${m.g} Grubu - ${m.d} ${m.t}</div>
-            <div style="display:flex; align-items:center; gap:15px; flex-wrap:wrap;">
-              <div style="flex:1; font-weight:600;">${flagH} ${m.h}</div>
-              <input type="number" min="0" id="admin-h-${m.id}" value="${hVal}" class="score-input" style="width:50px; padding:6px;">
-              <span>-</span>
-              <input type="number" min="0" id="admin-a-${m.id}" value="${aVal}" class="score-input" style="width:50px; padding:6px;">
-              <div style="flex:1; text-align:right; font-weight:600;">${m.a} ${flagA}</div>
-              <button class="btn btn-secondary" onclick="saveAdminResult('${m.id}')" style="padding:6px 12px; font-size:0.8rem;">Skor Kaydet</button>
-              ${res ? `<button class="btn btn-danger" onclick="deleteAdminResult('${m.id}')" style="padding:6px 12px; font-size:0.8rem; background:#b91c1c;">Temizle</button>` : ''}
-            </div>
-          </div>`;
-      });
-      document.getElementById('admin-matches-list').innerHTML = html;
-    }
-
-    function saveAdminResult(mid) {
-      const hScore = document.getElementById(`admin-h-${mid}`).value;
-      const aScore = document.getElementById(`admin-a-${mid}`).value;
-
-      if (hScore === '' || aScore === '') {
-        showToast('Skor alanlarını boş bırakamazsınız.');
-        return;
-      }
-
-      database.ref(`results/${mid}`).set({
-        hScore: hScore,
-        aScore: aScore
-      }).then(() => {
-        showToast('Maç sonucu sisteme işlendi, tüm puanlar güncellendi!');
-      });
-    }
-
-    function deleteAdminResult(mid) {
-      if (confirm('Bu maç sonucunu iptal etmek ve girilen skoru silmek istiyor musunuz?')) {
-        database.ref(`results/${mid}`).remove().then(() => {
-          showToast('Maç sonucu silindi.');
-        });
-      }
-    }
-    
-    function deletePlayer(uid, playerName) {
-      if (confirm(`⚠️ DİKKAT: "${playerName}" isimli oyuncuyu ve yaptığı TÜM tahminleri silmek istediğinize emin misiniz? Bu işlem geri alınamaz!`)) {
-        
-        // 1. Oyuncunun tahminlerini sil
-        database.ref(`predictions/${uid}`).remove()
-          .then(() => {
-            // 2. Oyuncunun profilini/hesabını sil
-            return database.ref(`users/${uid}`).remove();
-          })
-          .then(() => {
-            showToast(`"${playerName}" başarıyla sistemden silindi.`);
-          })
-          .catch(err => {
-            showToast("Hata oluştu: " + err.message);
-          });
-      }
-    }
-
-    // ==================== TOAST ALERT NOTIFICATION ====================
-    function showToast(msg) {
-      const toast = document.createElement('div');
-      toast.className = 'toast';
-      toast.textContent = msg;
-      document.body.appendChild(toast);
-      setTimeout(() => { toast.remove(); }, 3000);
-    }
-  </script>
-</body>
-</html>
+          scoreDisplayHtml = `<div class="score-display">${realResult
