@@ -528,16 +528,21 @@
     }
 
     .score-input {
-      width: 60px;
-      padding: 10px;
-      background: var(--dark-card);
-      border: 1px solid var(--dark-border);
-      border-radius: 6px;
-      text-align: center;
-      font-size: 1.2rem;
-      font-weight: 700;
-      color: var(--dark-text);
-    }
+  width: 50px !important;
+  height: 40px !important;
+  background: var(--dark-card);
+  border: 1px solid var(--dark-border);
+  border-radius: 6px;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--dark-text);
+  
+  /* Kesilmeyi önleyen ve içeriği tam ortalayan kritik ayarlar */
+  padding: 0 !important;          /* Sayıyı sıkıştıran 10px padding sıfırlandı */
+  line-height: 40px !important;   /* Sayıyı dikeyde tam merkeze hizalar */
+  text-align: center !important;  /* Sayıyı yatayda tam merkeze hizalar */
+  box-sizing: border-box !important;
+}
 
     .score-input:focus {
       outline: none;
