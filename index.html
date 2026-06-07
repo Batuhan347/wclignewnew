@@ -1652,9 +1652,8 @@ document.getElementById('login-screen').style.display = 'none';
 
       MATCHES.forEach(m => {
         if (currentDay !== m.d) {
-          if (currentDay !== '') html += '</div>'; // Önceki günün listesini kapat
+          if (currentDay !== '') html += '</div></div>'; // Önceki günün listesini kapat
           currentDay = m.d;
-          // Günleri bir sarmalayıcı (wrapper) içine alıyoruz ki desktop grid yapısı düzgün çalışsın
           html += `
             <div class="match-day-section">
               <div class="match-day-header">📅 ${m.d} 2026</div>
@@ -1664,8 +1663,8 @@ document.getElementById('login-screen').style.display = 'none';
         const flagH = TEAM_FLAGS[m.h] || '🏳️';
         const flagA = TEAM_FLAGS[m.a] || '🏳️';
         
-        const realResult = appData.results[m.id];
-        const userPred = (appData.predictions[currentUser.id] || {})[m.id];
+        const realResult = appData.results ? appData.results[m.id] : null;
+        const userPred = (appData.predictions && appData.predictions[currentUser.id]) ? appData.predictions[currentUser.id][m.id] : null;
         
         let statusHtml = `<span class="match-status status-upcoming">Bekliyor</span>`;
         let scoreDisplayHtml = `<div class="vs">VS<br><span class="match-time-text">${m.t}</span></div>`;
@@ -1740,6 +1739,7 @@ document.getElementById('login-screen').style.display = 'none';
             </div>`;
         }
 
+        // Ana Kart Yapısı (Inputlar ve Diğer tahminler footer içine birleştirildi)
         html += `
           <div class="match-card">
             <div class="match-card-header-zone">
