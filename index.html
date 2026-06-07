@@ -796,116 +796,161 @@
       0% { transform: rotate(0deg); }
       100% { transform: rotate(360deg); }
     }   
-    /* ==================== PREMIUM DESKTOP MATCH CENTER ==================== */
-    @media screen and (min-width: 768px) {
-      .container, #matches-page, .app-container { 
-        max-width: 1200px !important;
-        margin: 0 auto !important;
-        padding: 20px !important;
-      }
-      .matches-list, .matches-container {
-        display: grid !important;
-        grid-template-columns: repeat(auto-fill, minmax(540px, 1fr)) !important;
-        gap: 16px !important;
-      }
-      .match-card {
-        display: flex !important;
-        align-items: center !important;
-        justify-content: space-between !important;
-        padding: 12px 20px !important;
-        height: 75px !important;
-        background: #1e2530 !important;
-        border: 1px solid rgba(255, 255, 255, 0.05) !important;
-        border-radius: 12px !important;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
-        transition: transform 0.2s, border-color 0.2s !important;
-        margin-bottom: 0 !important;
-      }
-      .match-card:hover {
-        border-color: rgba(255, 255, 255, 0.15) !important;
-        transform: translateY(-2px) !important;
-      }
-      .match-info-sidebar {
-        display: flex !important;
-        flex-direction: column !important;
-        justify-content: center !important;
-        align-items: flex-start !important;
-        min-width: 75px !important;
-        border-right: 1px solid rgba(255, 255, 255, 0.1) !important;
-        padding-right: 12px !important;
-      }
-      .match-date {
-        font-size: 11px !important;
-        color: #8a99ad !important;
-        text-transform: uppercase !important;
-      }
-      .match-time {
-        font-size: 16px !important;
-        font-weight: 700 !important;
-        color: #ffffff !important;
-        margin: 2px 0 !important;
-      }
-      .match-group {
-        font-size: 10px !important;
-        background: rgba(255, 255, 255, 0.1) !important;
-        padding: 1px 6px !important;
-        border-radius: 4px !important;
-        color: #cbd5e1 !important;
-      }
-      .match-main-content {
-        display: flex !important;
-        align-items: center !important;
-        justify-content: space-between !important;
-        flex-grow: 1 !important;
-        padding: 0 20px !important;
-      }
-      .teams-flex-container {
-        display: flex !important;
-        align-items: center !important;
-        gap: 15px !important;
-        flex-grow: 1 !important;
-      }
-      .team-row {
-        display: flex !important;
-        align-items: center !important;
-        gap: 8px !important;
-        font-size: 14px !important;
-        font-weight: 600 !important;
-        width: 140px !important;
-      }
-      .team-row.home { justify-content: flex-end !important; text-align: right !important; }
-      .team-row.away { justify-content: flex-start !important; text-align: left !important; }
-      .team-flag { font-size: 20px !important; line-height: 1 !important; }
-      .match-vs { font-size: 12px !important; color: #64748b !important; font-weight: 700 !important; padding: 0 10px !important; }
-      .prediction-inputs-container { display: flex !important; align-items: center !important; gap: 6px !important; }
-      .prediction-input {
-        width: 36px !important;
-        height: 36px !important;
-        text-align: center !important;
-        font-size: 15px !important;
-        font-weight: 700 !important;
-        background: #0f141c !important;
-        border: 1px solid rgba(255, 255, 255, 0.1) !important;
-        color: #fff !important;
-        border-radius: 6px !important;
-        outline: none !important;
-        transition: border-color 0.2s !important;
-      }
-      .prediction-input:focus {
-        border-color: #3b82f6 !important;
-        box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2) !important;
-      }
-      .save-prediction-btn {
-        height: 36px !important;
-        padding: 0 12px !important;
-        font-size: 12px !important;
-        font-weight: 600 !important;
-        border-radius: 6px !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-      }
-    }
+    /* ==================== PREMIUM DESKTOP MATCH CENTER (GÜNCEL) ==================== */
+@media screen and (min-width: 992px) {
+  /* Ana kapsayıcıyı ortala ve nefes aldır */
+  #matches-container {
+    max-width: 1300px !important;
+    margin: 0 auto !important;
+    padding: 0 20px !important;
+  }
+
+  /* Gün gruplarının başlığı */
+  .match-day-header {
+    font-size: 1.1rem !important;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.05) !important;
+    padding-bottom: 8px !important;
+    margin-top: 30px !important;
+    margin-bottom: 15px !important;
+  }
+
+  /* Maçları yan yana 2'li düzen yap */
+  .match-day-grid {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fill, minmax(600px, 1fr)) !important;
+    gap: 16px !important;
+  }
+
+  /* Maç Kartı Masaüstü Optimizasyonu (%30 daha kompakt ve ince) */
+  .match-card {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    padding: 10px 15px !important;
+    height: 85px !important; /* Dikey yükseklik azaltıldı */
+    margin-bottom: 0 !important;
+    gap: 15px !important;
+    overflow: hidden !important;
+  }
+
+  /* Kart içi Header (Badge ve Durum) */
+  .match-card-header-zone {
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: flex-start !important;
+    gap: 4px !important;
+    min-width: 80px !important;
+    border-right: 1px solid rgba(255, 255, 255, 0.08) !important;
+    padding-right: 10px !important;
+  }
+
+  /* Takımların yatay dizilimi */
+  .match-main-area {
+    flex: 1 !important;
+  }
+
+  .match-teams-layout {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 12px !important;
+  }
+
+  .team-block {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    width: 110px !important; /* İsimlerin taşmasını engeller */
+    font-size: 0.9rem !important;
+    font-weight: 600 !important;
+  }
+
+  .team-block.home-team { justify-content: flex-end !important; text-align: right !important; }
+  .team-block.away-team { justify-content: flex-start !important; text-align: left !important; }
+  .team-flag-emoji { font-size: 1.4rem !important; }
+
+  /* Skor Alanı */
+  .score-center-zone {
+    min-width: 60px !important;
+    text-align: center !important;
+  }
+  .score-center-zone .vs { font-size: 0.75rem !important; color: #64748b !important; font-weight: bold !important; line-height: 1.2 !important; }
+  .score-center-zone .match-time-text { font-size: 0.85rem !important; color: #fff !important; }
+  .score-center-zone .score-display { font-size: 1.2rem !important; font-weight: 800 !important; color: var(--primary) !important; }
+
+  /* Sağ Taraf: Tahmin ve Diğer Oyuncular Kutusu */
+  .match-footer-area {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 15px !important;
+    min-width: 260px !important;
+    border-left: 1px solid rgba(255, 255, 255, 0.08) !important;
+    padding-left: 15px !important;
+  }
+
+  /* Tahmin Bölümü */
+  .pred-section {
+    margin-top: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 4px !important;
+  }
+  .pred-section.finished-pred { font-size: 0.8rem !important; min-width: 110px !important; }
+  .pred-section.no-pred { font-size: 0.8rem !important; min-width: 110px !important; }
+
+  .pred-label { font-size: 0.7rem !important; text-transform: uppercase !important; color: #64748b !important; }
+  .pred-inputs { display: flex !important; align-items: center !important; gap: 4px !important; }
+  
+  .score-input {
+    width: 30px !important;
+    height: 30px !important;
+    font-size: 0.85rem !important;
+    border-radius: 4px !important;
+    background: #0f141c !important;
+  }
+  .score-dash { color: #64748b !important; padding: 0 2px !important; }
+
+  .save-prediction-btn {
+    padding: 6px 10px !important;
+    font-size: 0.75rem !important;
+    height: 30px !important;
+    border-radius: 4px !important;
+    margin-left: 4px !important;
+  }
+
+  /* Diğer Oyuncuların Tahminleri Bölümü (Sağ tarafta kompakt dikey kaydırma alanı) */
+  .predictions-list {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+    border-top: none !important;
+    flex: 1 !important;
+    min-width: 120px !important;
+    max-width: 150px !important;
+  }
+
+  .predictions-title {
+    font-size: 0.65rem !important;
+    color: #64748b !important;
+    margin-bottom: 2px !important;
+  }
+
+  .predictions-scroll-area {
+    max-height: 50px !important; /* İç içe taşmayı önlemek için dikey scroll */
+    overflow-y: auto !important;
+    padding-right: 2px !important;
+  }
+  
+  .predictions-scroll-area::-webkit-scrollbar { width: 3px; }
+  .predictions-scroll-area::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
+
+  .prediction-row {
+    padding: 1px 0 !important;
+    font-size: 0.75rem !important;
+  }
+}
   </style>
 </head>
 <body>
@@ -1546,132 +1591,136 @@ document.getElementById('login-screen').style.display = 'none';
       document.getElementById('groups-wrapper').innerHTML = html;
     }
 
-    // ==================== RENDER USER MATCHES & INPUTS ====================
-    function renderMatches() {
-      let html = '';
-      let currentDay = '';
+   // ==================== RENDER USER MATCHES & INPUTS ====================
+    function renderMatches() {
+      let html = '';
+      let currentDay = '';
 
-      MATCHES.forEach(m => {
-        if (currentDay !== m.d) {
-          if (currentDay !== '') html += '</div>';
-          currentDay = m.d;
-          html += `<div class="match-day"><div class="match-day-header">📅 ${m.d}</div>`;
-        }
+      MATCHES.forEach(m => {
+        if (currentDay !== m.d) {
+          if (currentDay !== '') html += '</div>'; // Önceki günün listesini kapat
+          currentDay = m.d;
+          // Günleri bir sarmalayıcı (wrapper) içine alıyoruz ki desktop grid yapısı düzgün çalışsın
+          html += `
+            <div class="match-day-section">
+              <div class="match-day-header">📅 ${m.d} 2026</div>
+              <div class="match-day-grid">`;
+        }
 
-        const flagH = TEAM_FLAGS[m.h] || '🏳️';
-        const flagA = TEAM_FLAGS[m.a] || '🏳️';
-        
-        const realResult = appData.results[m.id];
-        const userPred = (appData.predictions[currentUser.id] || {})[m.id];
-        
-        let statusHtml = `<span class="match-status status-upcoming">Bekliyor</span>`;
-        let scoreDisplayHtml = `<div class="vs">VS<br><span style="font-size:0.75rem;">${m.t}</span></div>`;
-        
-        if (realResult) {
-          statusHtml = `<span class="match-status status-finished">Bitti</span>`;
-          scoreDisplayHtml = `<div class="score-display">${realResult.hScore} - ${realResult.aScore}</div>`;
-        }
+        const flagH = TEAM_FLAGS[m.h] || '🏳️';
+        const flagA = TEAM_FLAGS[m.a] || '🏳️';
+        
+        const realResult = appData.results[m.id];
+        const userPred = (appData.predictions[currentUser.id] || {})[m.id];
+        
+        let statusHtml = `<span class="match-status status-upcoming">Bekliyor</span>`;
+        let scoreDisplayHtml = `<div class="vs">VS<br><span class="match-time-text">${m.t}</span></div>`;
+        
+        if (realResult) {
+          statusHtml = `<span class="match-status status-finished">Bitti</span>`;
+          scoreDisplayHtml = `<div class="score-display">${realResult.hScore} - ${realResult.aScore}</div>`;
+        }
 
-        // Tahmin Girdi Alanı Kontrolü (Maç bitmediyse yazabilir)
-        let predInputHtml = '';
-        if (!realResult) {
-          const hVal = userPred ? userPred.hScore : '';
-          const aVal = userPred ? userPred.aScore : '';
-          predInputHtml = `
-            <div class="pred-section">
-              <div class="pred-label">Tahmininiz:</div>
-              <div class="pred-inputs">
-                <input type="number" min="0" class="score-input" id="pred-h-${m.id}" value="${hVal}" placeholder="0">
-                <span class="score-dash">-</span>
-                <input type="number" min="0" class="score-input" id="pred-a-${m.id}" value="${aVal}" placeholder="0">
-                <button class="btn btn-primary" onclick="savePrediction('${m.id}')" style="padding:8px 12px; font-size:0.8rem; margin-left:auto;">Kaydet</button>
-              </div>
-            </div>`;
-        } else {
-          // Maç bittiyse ve kullanıcının tahmini varsa puan hesap sonucunu göster
-          if (userPred) {
-            let pts = 0;
-            let ptsClass = 'points-0';
-            const rH = parseInt(realResult.hScore); const rA = parseInt(realResult.aScore);
-            const pH = parseInt(userPred.hScore); const pA = parseInt(userPred.aScore);
-            if (rH === pH && rA === pA) { pts = 3; ptsClass = 'points-3'; }
-            else if ((rH > rA && pH > pA) || (rH < rA && pA > pH) || (rH === rA && pH === pA)) { pts = 1; ptsClass = 'points-1'; }
-            
-            predInputHtml = `
-              <div class="pred-section" style="display:flex; justify-content:space-between; align-items:center;">
-                <span>Tahmininiz: <b>${userPred.hScore} - ${userPred.aScore}</b></span>
-                <span class="pred-points ${ptsClass}">${pts} Puan Kazandın</span>
-              </div>`;
-          } else {
-            predInputHtml = `<div class="pred-section" style="color:var(--dark-muted); font-size:0.85rem;">Bu maça tahmin yapmadınız.</div>`;
-          }
-        }
+        // Tahmin Girdi Alanı Kontrolü
+        let predInputHtml = '';
+        if (!realResult) {
+          const hVal = userPred ? userPred.hScore : '';
+          const aVal = userPred ? userPred.aScore : '';
+          predInputHtml = `
+            <div class="pred-section">
+              <div class="pred-label">Tahmininiz:</div>
+              <div class="pred-inputs">
+                <input type="number" min="0" class="score-input" id="pred-h-${m.id}" value="${hVal}" placeholder="0">
+                <span class="score-dash">-</span>
+                <input type="number" min="0" class="score-input" id="pred-a-${m.id}" value="${aVal}" placeholder="0">
+                <button class="btn btn-primary save-prediction-btn" onclick="savePrediction('${m.id}')">Kaydet</button>
+              </div>
+            </div>`;
+        } else {
+          if (userPred) {
+            let pts = 0;
+            let ptsClass = 'points-0';
+            const rH = parseInt(realResult.hScore); const rA = parseInt(realResult.aScore);
+            const pH = parseInt(userPred.hScore); const pA = parseInt(userPred.aScore);
+            if (rH === pH && rA === pA) { pts = 3; ptsClass = 'points-3'; }
+            else if ((rH > rA && pH > pA) || (rH < rA && pA > pH) || (rH === rA && pH === pA)) { pts = 1; ptsClass = 'points-1'; }
+            
+            predInputHtml = `
+              <div class="pred-section finished-pred">
+                <span>Tahmininiz: <b>${userPred.hScore} - ${userPred.aScore}</b></span>
+                <span class="pred-points ${ptsClass}">${pts} Puan</span>
+              </div>`;
+          } else {
+            predInputHtml = `<div class="pred-section no-pred">Bu maça tahmin yapmadınız.</div>`;
+          }
+        }
 
-        // Diğer oyuncuların tahminlerini listele (Transparanlık sağlar)
-      let allPlayersPredsHtml = '';
-        let predRows = '';
-        
-        if (appData.predictions) {
-          Object.keys(appData.predictions).forEach(uid => {
-            if (currentUser && uid === currentUser.id) return; // Kendisini atla
-            if (!appData.players[uid]) return; // Oyuncu silindiyse veya yoksa atla
-            
-            const userPreds = appData.predictions[uid];
-            if (userPreds && userPreds[m.id]) {
-              const pData = userPreds[m.id];
-              // hScore ve aScore verilerinin varlığından emin oluyoruz
-              if (pData.hScore !== undefined && pData.aScore !== undefined) {
-                predRows += `
-                  <div class="prediction-row" style="display:flex; justify-content:space-between; padding:4px 0; border-bottom:1px solid rgba(255,255,255,0.02);">
-                    <span class="pred-player" style="color:var(--dark-muted); font-size:0.85rem;">${appData.players[uid].name}</span>
-                    <span class="pred-score" style="color:var(--primary); font-weight:600; font-size:0.85rem;">${pData.hScore} - ${pData.aScore}</span>
-                  </div>`;
-              }
-            }
-          });
-        }
+        // Diğer oyuncuların tahminleri listesi
+        let allPlayersPredsHtml = '';
+        let predRows = '';
+        
+        if (appData.predictions) {
+          Object.keys(appData.predictions).forEach(uid => {
+            if (currentUser && uid === currentUser.id) return;
+            if (!appData.players[uid]) return;
+            
+            const userPreds = appData.predictions[uid];
+            if (userPreds && userPreds[m.id]) {
+              const pData = userPreds[m.id];
+              if (pData.hScore !== undefined && pData.aScore !== undefined) {
+                predRows += `
+                  <div class="prediction-row">
+                    <span class="pred-player">${appData.players[uid].name}</span>
+                    <span class="pred-score">${pData.hScore} - ${pData.aScore}</span>
+                  </div>`;
+              }
+            }
+          });
+        }
 
-        if (predRows) {
-          allPlayersPredsHtml = `
-            <div class="predictions-list" style="margin-top:12px; padding-top:10px; border-top:1px solid rgba(255,255,255,0.05);">
-              <div class="predictions-title" style="font-size:0.75rem; color:var(--dark-muted); font-weight:700; margin-bottom:6px; text-transform:uppercase;">DİĞER OYUNCULARIN TAHMİNLERİ</div>
-              ${predRows}
-            </div>`;
-        }
+        if (predRows) {
+          allPlayersPredsHtml = `
+            <div class="predictions-list">
+              <div class="predictions-title">DİĞER OYUNCULARIN TAHMİNLERİ</div>
+              <div class="predictions-scroll-area">${predRows}</div>
+            </div>`;
+        }
 
-        if (predRows) {
-          allPlayersPredsHtml = `
-            <div class="predictions-list" style="margin-top:10px;">
-              <div class="predictions-title">Diğer Oyuncuların Tahminleri</div>
-              ${predRows}
-            </div>`;
-        }
+        html += `
+          <div class="match-card">
+            <div class="match-card-header-zone">
+              <span class="group-badge">${m.g} Grubu</span>
+              ${statusHtml}
+            </div>
+            
+            <div class="match-main-area">
+              <div class="match-teams-layout">
+                <div class="team-block home-team">
+                  <span class="team-name-text">${m.h}</span>
+                  <span class="team-flag-emoji">${flagH}</span>
+                </div>
+                
+                <div class="score-center-zone">
+                  ${scoreDisplayHtml}
+                </div>
+                
+                <div class="team-block away-team">
+                  <span class="team-flag-emoji">${flagA}</span>
+                  <span class="team-name-text">${m.a}</span>
+                </div>
+              </div>
+            </div>
 
-        html += `
-          <div class="match-card">
-            <div class="match-header">
-              <span class="group-badge">${m.g} Grubu</span>
-              ${statusHtml}
-            </div>
-            <div class="match-teams">
-              <div class="team" style="justify-content: flex-end;">
-                <span class="team-name">${m.h}</span>
-                <span class="team-flag">${flagH}</span>
-              </div>
-              ${scoreDisplayHtml}
-              <div class="team">
-                <span class="team-flag">${flagA}</span>
-                <span class="team-name">${m.a}</span>
-              </div>
-            </div>
-            ${predInputHtml}
-            ${allPlayersPredsHtml}
-          </div>`;
-      });
+            <div class="match-footer-area">
+              ${predInputHtml}
+              ${allPlayersPredsHtml}
+            </div>
+          </div>`;
+      });
 
-      if (html !== '') html += '</div>';
-      document.getElementById('matches-container').innerHTML = html || '<div class="empty-state">Maç bulunamadı.</div>';
-    }
+      if (html !== '') html += '</div></div>'; // Etiketleri kapat
+      document.getElementById('matches-container').innerHTML = html || '<div class="empty-state">Maç bulunamadı.</div>';
+    }
 
     function savePrediction(mid) {
       const hScore = document.getElementById(`pred-h-${mid}`).value;
