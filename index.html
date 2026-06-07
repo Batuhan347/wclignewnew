@@ -527,22 +527,30 @@
       margin-bottom: 15px;
     }
 
-    .score-input {
-  width: 50px !important;
-  height: 40px !important;
-  background: var(--dark-card);
-  border: 1px solid var(--dark-border);
-  border-radius: 6px;
-  font-size: 1.2rem;
-  font-weight: 700;
-  color: var(--dark-text);
-  
-  /* Kesilmeyi önleyen ve içeriği tam ortalayan kritik ayarlar */
-  padding: 0 !important;          /* Sayıyı sıkıştıran 10px padding sıfırlandı */
-  line-height: 40px !important;   /* Sayıyı dikeyde tam merkeze hizalar */
-  text-align: center !important;  /* Sayıyı yatayda tam merkeze hizalar */
-  box-sizing: border-box !important;
-}
+   .score-input {
+    width: 55px !important;       /* Biraz daha genişlettik */
+    height: 40px !important;
+    background: var(--dark-card) !important;
+    border: 1px solid var(--dark-border) !important;
+    border-radius: 6px !important;
+    font-size: 1.2rem !important;
+    font-weight: 700 !important;
+    color: var(--dark-text) !important;
+    padding: 0 !important;
+    line-height: 40px !important;
+    text-align: center !important;
+    box-sizing: border-box !important;
+    
+    /* İŞTE BU KISIM OKLARI YOK EDER */
+    -moz-appearance: textfield !important; /* Firefox için */
+  }
+
+  /* Chrome, Safari, Edge için okları temizleme */
+  .score-input::-webkit-outer-spin-button,
+  .score-input::-webkit-inner-spin-button {
+    -webkit-appearance: none !important;
+    margin: 0 !important;
+  }
 
     .score-input:focus {
       outline: none;
