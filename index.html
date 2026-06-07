@@ -1013,6 +1013,80 @@
     border: 1px solid rgba(255,255,255,0.04) !important;
     background: rgba(255, 255, 255, 0.01) !important;
     border-radius: 4px !important;
+  /* ==================== GRID VE TAŞMA KESİN DÜZELTME ==================== */
+@media screen and (min-width: 992px) {
+  /* Kartları yan yana dizen grid yapısını tamamen iptal edip alt alta dikey sıraya zorluyoruz */
+  .match-day-grid {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 24px !important;
+    width: 100% !important;
+  }
+
+  /* Kartın içindeki elemanları (Takımlar, Tahminler) alt alta geniş satırlar halinde açıyoruz */
+  .match-card {
+    display: flex !important;
+    flex-direction: column !important; /* İçerik yan yana değil, alt alta akar */
+    height: auto !important;           /* Sabit yükseklik engelini kırar */
+    min-height: unset !important;
+    max-height: unset !important;
+    overflow: visible !important;      /* Sağ taraftaki kırpılmayı ve gizlenmeyi çözer */
+    padding: 20px !important;
+    width: 100% !important;
+  }
+
+  /* Takımların olduğu orta alanı tam genişlik yapıyoruz */
+  .match-main-area {
+    width: 100% !important;
+    display: block !important;
+  }
+
+  /* Tahmin girişleri ve diğer oyuncular listesini alt alta sıralıyoruz */
+  .match-footer-area {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    width: 100% !important;
+    border-left: none !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.08) !important; /* Üstten ayırıcı çizgi */
+    padding-left: 0 !important;
+    padding-top: 15px !important;
+    height: auto !important;
+    gap: 15px !important;
+  }
+
+  /* Kendi tahmin giriş alanını satırda serbest bırakıyoruz */
+  .match-card .pred-section {
+    width: 100% !important;
+    max-width: unset !important;
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+  }
+
+  /* Diğer oyuncuların tahmin listesini dar bir kutudan çıkarıp tam genişliğe yayıyoruz */
+  .predictions-list {
+    width: 100% !important;
+    max-width: unset !important;
+    display: block !important;
+  }
+
+  /* Oyuncuları yan yana geniş geniş dizer, dikey kaydırma çubuğunu ve sıkışmayı yok eder */
+  .predictions-scroll-area {
+    max-height: unset !important;
+    overflow-y: visible !important;
+    display: flex !important;
+    flex-wrap: wrap !important; /* Sığmayan oyuncu alt satıra geçer, taşmaz */
+    gap: 12px !important;
+    width: 100% !important;
+  }
+
+  .prediction-row {
+    background: rgba(255, 255, 255, 0.03) !important;
+    padding: 6px 12px !important;
+    border-radius: 4px !important;
+    min-width: 140px !important; /* Her oyuncunun alanı sabit ve ferah olur */
   }
 }
   </style>
