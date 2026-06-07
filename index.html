@@ -796,7 +796,7 @@
       0% { transform: rotate(0deg); }
       100% { transform: rotate(360deg); }
     }   
-/* ==================== PREMIUM DESKTOP MATCH CENTER (SIFIR HATA) ==================== */
+/* ==================== PREMIUM DESKTOP MATCH CENTER (TAM GENİŞLİK & FERAHLATILMIŞ DÜZEN) ==================== */
 @media screen and (min-width: 992px) {
   #matches-container {
     max-width: 1300px !important;
@@ -806,19 +806,20 @@
   }
 
   .match-day-header {
-    font-size: 1.1rem !important;
+    font-size: 1.2rem !important;
     border-bottom: 2px solid rgba(255, 255, 255, 0.05) !important;
     padding-bottom: 8px !important;
     margin-top: 30px !important;
-    margin-bottom: 15px !important;
+    margin-bottom: 20px !important;
     width: 100% !important;
     display: block !important;
   }
 
+  /* İki sütunlu yapıyı kaldırıp alt alta tek satır (flex-direction: column) yapıyoruz */
   .match-day-grid {
-    display: grid !important;
-    grid-template-columns: repeat(auto-fill, minmax(580px, 1fr)) !important;
-    gap: 16px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 20px !important;
     width: 100% !important;
   }
 
@@ -827,42 +828,45 @@
     display: none !important;
   }
 
+  /* Sabit yükseklik ve overflow:hidden sınırlarını kaldırarak kartı dikeyde büyütüyoruz */
   .match-card {
     display: flex !important;
-    flex-direction: row !important;
-    align-items: center !important;
-    justify-content: space-between !important;
-    padding: 10px 15px !important;
-    height: 85px !important;
-    min-height: 85px !important;
-    max-height: 85px !important;
+    flex-direction: column !important; /* Kart içi elemanlar alt alta dikey sıralanır */
+    padding: 24px !important; /* İçeriğin nefes alması için alan açıldı */
+    height: auto !important; /* Sabit 85px kaldırıldı */
+    min-height: unset !important;
+    max-height: unset !important;
     margin-bottom: 0 !important;
-    gap: 15px !important;
-    overflow: hidden !important;
+    gap: 20px !important;
+    overflow: visible !important; /* Taşmalar tamamen önlenerek alan genişletildi */
     width: 100% !important;
     box-sizing: border-box !important;
   }
 
+  /* Üst Kısım: Grup ve Durum Badgeleri */
   .match-card-header-zone {
     display: flex !important;
-    flex-direction: column !important;
-    justify-content: center !important;
-    align-items: flex-start !important;
-    gap: 4px !important;
-    min-width: 80px !important;
-    max-width: 80px !important;
-    border-right: 1px solid rgba(255, 255, 255, 0.08) !important;
-    padding-right: 10px !important;
-    height: 100% !important;
+    flex-direction: row !important; /* Yan yana sıralama */
+    justify-content: space-between !important; /* İki uca yasla */
+    align-items: center !important;
+    width: 100% !important;
+    min-width: unset !important;
+    max-width: unset !important;
+    border-right: none !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important; /* Alt çizgi */
+    padding-right: 0 !important;
+    padding-bottom: 10px !important;
+    height: auto !important;
   }
 
-  /* Eski mobil elemanların çakışmasını engelle */
   .match-card .match-header, .match-card .match-teams {
     display: none !important;
   }
 
+  /* Orta Kısım: Takımlar Alanı (Tam Genişlik) */
   .match-main-area {
-    flex: 1 !important;
+    width: 100% !important;
+    flex: unset !important;
     display: block !important;
   }
 
@@ -871,138 +875,144 @@
     flex-direction: row !important;
     align-items: center !important;
     justify-content: center !important;
-    gap: 12px !important;
+    gap: 24px !important; /* Takımlar arası mesafeyi açtık */
     width: 100% !important;
   }
 
+  /* Geniş ekranda takım isimleri kırılmasın diye genişliği artırdık */
   .team-block {
     display: flex !important;
     flex-direction: row !important;
     align-items: center !important;
-    gap: 8px !important;
-    width: 120px !important;
-    max-width: 120px !important;
-    font-size: 0.9rem !important;
+    gap: 12px !important;
+    width: 200px !important;
+    max-width: 250px !important;
+    font-size: 1.1rem !important; /* Takım isimleri daha net okunsun */
     font-weight: 600 !important;
   }
 
   .team-block.home-team { justify-content: flex-end !important; text-align: right !important; }
   .team-block.away-team { justify-content: flex-start !important; text-align: left !important; }
-  .team-flag-emoji { font-size: 1.4rem !important; display: inline-block !important; }
+  .team-flag-emoji { font-size: 1.8rem !important; display: inline-block !important; }
   .team-name-text { display: inline-block !important; white-space: nowrap !important; overflow: hidden !important; text-overflow: ellipsis !important; }
 
   .score-center-zone {
-    min-width: 60px !important;
-    max-width: 60px !important;
+    min-width: 100px !important;
+    max-width: 120px !important;
     text-align: center !important;
   }
   
   .score-center-zone .vs { 
-    font-size: 0.75rem !important; 
+    font-size: 0.85rem !important; 
     color: #64748b !important; 
     font-weight: bold !important; 
-    line-height: 1.2 !important; 
+    line-height: 1.4 !important; 
     margin: 0 !important; 
     background: none !important; 
     padding: 0 !important;
   }
   
-  .score-center-zone .match-time-text { font-size: 0.85rem !important; color: #fff !important; }
-  .score-center-zone .score-display { font-size: 1.2rem !important; font-weight: 800 !important; color: var(--primary) !important; }
+  .score-center-zone .match-time-text { font-size: 0.95rem !important; color: #fff !important; }
+  .score-center-zone .score-display { font-size: 1.5rem !important; font-weight: 800 !important; color: var(--primary) !important; }
 
+  /* Alt Kısım: Tahmin alanı ve Diğer Oyuncular (Dikey Düzen) */
   .match-footer-area {
     display: flex !important;
-    flex-direction: row !important;
-    align-items: center !important;
-    gap: 15px !important;
-    min-width: 260px !important;
-    max-width: 260px !important;
-    border-left: 1px solid rgba(255, 255, 255, 0.08) !important;
-    padding-left: 15px !important;
-    height: 100% !important;
+    flex-direction: column !important; /* Elemanları alt alta alıyoruz */
+    align-items: flex-start !important;
+    gap: 16px !important;
+    width: 100% !important;
+    min-width: unset !important;
+    max-width: unset !important;
+    border-left: none !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.05) !important; /* Ayrım çizgisi */
+    padding-left: 0 !important;
+    padding-top: 16px !important;
+    height: auto !important;
   }
 
-  /* Tahmin Alanını Zorla Görünür Yapıyoruz */
+  /* Kendi Tahmin Alanın */
   .match-card .pred-section {
     display: flex !important;
-    flex-direction: column !important;
-    gap: 4px !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    background: none !important;
-    border: none !important;
-    min-width: 120px !important;
+    flex-direction: row !important; /* Başlık ve inputları yan yana çekerek yer kazandık */
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 12px !important;
+    width: 100% !important;
+    background: rgba(255, 255, 255, 0.02) !important; /* Hafif modern bir zemin kartı */
+    padding: 12px 16px !important;
+    border-radius: 6px !important;
+    border: 1px solid rgba(255, 255, 255, 0.03) !important;
     visibility: visible !important;
     opacity: 1 !important;
   }
 
-  .pred-section.finished-pred { font-size: 0.8rem !important; min-width: 110px !important; flex-direction: column !important; align-items: flex-start !important;}
-  .pred-section.no-pred { font-size: 0.8rem !important; min-width: 110px !important; }
-  .pred-label { font-size: 0.7rem !important; text-transform: uppercase !important; color: #64748b !important; display: block !important;}
-  .pred-inputs { display: flex !important; flex-direction: row !important; align-items: center !important; gap: 4px !important; }
+  .pred-section.finished-pred { font-size: 0.9rem !important; flex-direction: row !important; align-items: center !important;}
+  .pred-section.no-pred { font-size: 0.9rem !important; color: #64748b !important; }
+  .pred-label { font-size: 0.8rem !important; text-transform: uppercase !important; color: #64748b !important; display: block !important; margin: 0 !important;}
+  .pred-inputs { display: flex !important; flex-direction: row !important; align-items: center !important; gap: 6px !important; }
   
   .score-input {
-    width: 32px !important;
-    height: 32px !important;
-    font-size: 0.85rem !important;
-    border-radius: 4px !important;
+    width: 40px !important; /* Girdileri biraz daha büyütüp rahatlattık */
+    height: 40px !important;
+    font-size: 1rem !important;
+    border-radius: 6px !important;
     background: #0f141c !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    display: inline-block !important;
     color: #fff !important;
     border: 1px solid rgba(255,255,255,0.1) !important;
     text-align: center !important;
   }
   
-  .score-dash { color: #64748b !important; padding: 0 2px !important; display: inline !important;}
+  .score-dash { font-size: 1.2rem !important; color: #64748b !important; padding: 0 4px !important; }
 
   .save-prediction-btn {
-    padding: 6px 10px !important;
-    font-size: 0.75rem !important;
-    height: 32px !important;
-    border-radius: 4px !important;
-    margin-left: 4px !important;
-    width: auto !important;
-    display: inline-block !important;
+    padding: 0 16px !important;
+    font-size: 0.85rem !important;
+    height: 40px !important;
+    border-radius: 6px !important;
+    margin-left: 8px !important;
+    cursor: pointer !important;
   }
 
+  /* Diğer Oyuncuların Tahmin Listesi Bölümü (Tam Genişlik) */
   .predictions-list {
     margin: 0 !important;
     padding: 0 !important;
-    border: none !important;
-    flex: 1 !important;
-    min-width: 120px !important;
-    max-width: 130px !important;
+    width: 100% !important;
+    min-width: unset !important;
+    max-width: unset !important;
     display: block !important;
     background: none !important;
   }
 
   .predictions-title {
-    font-size: 0.65rem !important;
+    font-size: 0.75rem !important;
+    font-weight: bold !important;
+    letter-spacing: 0.5px !important;
     color: #64748b !important;
-    margin-bottom: 2px !important;
+    margin-bottom: 10px !important;
     display: block !important;
   }
 
+  /* Sıkışık kaydırma çubuğunu kaldırıp, oyuncuları esnek yan yana (Grid) düzene geçiriyoruz */
   .predictions-scroll-area {
-    max-height: 55px !important;
-    overflow-y: auto !important;
-    padding-right: 2px !important;
-    display: block !important;
+    max-height: unset !important; /* Kaydırmayı bitirip listeyi tamamen açıyoruz */
+    overflow-y: visible !important;
+    display: grid !important;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)) !important; /* Oyuncuları yan yana genişçe dizer, taşma yapmaz */
+    gap: 10px !important;
+    width: 100% !important;
   }
-  
-  .predictions-scroll-area::-webkit-scrollbar { width: 3px !important; }
-  .predictions-scroll-area::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1) !important; border-radius: 10px !important; }
 
   .prediction-row {
-    padding: 2px 0 !important;
-    font-size: 0.75rem !important;
+    padding: 8px 12px !important;
+    font-size: 0.85rem !important;
     display: flex !important;
     flex-direction: row !important;
     justify-content: space-between !important;
-    border-bottom: 1px solid rgba(255,255,255,0.02) !important;
-    background: none !important;
+    border: 1px solid rgba(255,255,255,0.04) !important;
+    background: rgba(255, 255, 255, 0.01) !important;
+    border-radius: 4px !important;
   }
 }
   </style>
