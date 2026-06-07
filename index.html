@@ -796,13 +796,14 @@
       0% { transform: rotate(0deg); }
       100% { transform: rotate(360deg); }
     }   
-    /* ==================== PREMIUM DESKTOP MATCH CENTER (GÜNCEL) ==================== */
+ /* ==================== PREMIUM DESKTOP MATCH CENTER (KESİN ÇÖZÜM) ==================== */
 @media screen and (min-width: 992px) {
   /* Ana kapsayıcıyı ortala ve nefes aldır */
   #matches-container {
     max-width: 1300px !important;
     margin: 0 auto !important;
     padding: 0 20px !important;
+    display: block !important;
   }
 
   /* Gün gruplarının başlığı */
@@ -812,13 +813,21 @@
     padding-bottom: 8px !important;
     margin-top: 30px !important;
     margin-bottom: 15px !important;
+    width: 100% !important;
+    display: block !important;
   }
 
   /* Maçları yan yana 2'li düzen yap */
   .match-day-grid {
     display: grid !important;
-    grid-template-columns: repeat(auto-fill, minmax(600px, 1fr)) !important;
+    grid-template-columns: repeat(auto-fill, minmax(580px, 1fr)) !important;
     gap: 16px !important;
+    width: 100% !important;
+  }
+
+  /* Eski dikey çizgileri ve eski esnek yapıları sıfırlıyoruz */
+  .match-card::before, .match-card::after {
+    display: none !important;
   }
 
   /* Maç Kartı Masaüstü Optimizasyonu (%30 daha kompakt ve ince) */
@@ -829,9 +838,13 @@
     justify-content: space-between !important;
     padding: 10px 15px !important;
     height: 85px !important; /* Dikey yükseklik azaltıldı */
+    min-height: 85px !important;
+    max-height: 85px !important;
     margin-bottom: 0 !important;
     gap: 15px !important;
     overflow: hidden !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
   }
 
   /* Kart içi Header (Badge ve Durum) */
@@ -842,41 +855,60 @@
     align-items: flex-start !important;
     gap: 4px !important;
     min-width: 80px !important;
+    max-width: 80px !important;
     border-right: 1px solid rgba(255, 255, 255, 0.08) !important;
     padding-right: 10px !important;
+    height: 100% !important;
+  }
+
+  /* Eski alt alta olan başlık düzenini sıfırla */
+  .match-card .match-header {
+    display: none !important; /* Eski mobil header'ı gizle, yenisini kullanıyoruz */
   }
 
   /* Takımların yatay dizilimi */
   .match-main-area {
     flex: 1 !important;
+    display: block !important;
   }
 
   .match-teams-layout {
     display: flex !important;
+    flex-direction: row !important;
     align-items: center !important;
     justify-content: center !important;
     gap: 12px !important;
+    width: 100% !important;
+  }
+
+  /* Eski mobil takım satırlarını ez */
+  .match-card .match-teams {
+    display: none !important;
   }
 
   .team-block {
     display: flex !important;
+    flex-direction: row !important;
     align-items: center !important;
     gap: 8px !important;
-    width: 110px !important; /* İsimlerin taşmasını engeller */
+    width: 120px !important; /* İsimlerin taşmasını engeller */
+    max-width: 120px !important;
     font-size: 0.9rem !important;
     font-weight: 600 !important;
   }
 
   .team-block.home-team { justify-content: flex-end !important; text-align: right !important; }
   .team-block.away-team { justify-content: flex-start !important; text-align: left !important; }
-  .team-flag-emoji { font-size: 1.4rem !important; }
+  .team-flag-emoji { font-size: 1.4rem !important; display: inline-block !important; }
+  .team-name-text { display: inline-block !important; white-space: nowrap !important; overflow: hidden !important; text-overflow: ellipsis !important; }
 
   /* Skor Alanı */
   .score-center-zone {
     min-width: 60px !important;
+    max-width: 60px !important;
     text-align: center !important;
   }
-  .score-center-zone .vs { font-size: 0.75rem !important; color: #64748b !important; font-weight: bold !important; line-height: 1.2 !important; }
+  .score-center-zone .vs { font-size: 0.75rem !important; color: #64748b !important; font-weight: bold !important; line-height: 1.2 !important; margin: 0 !important; background: none !important; padding: 0 !important;}
   .score-center-zone .match-time-text { font-size: 0.85rem !important; color: #fff !important; }
   .score-center-zone .score-display { font-size: 1.2rem !important; font-weight: 800 !important; color: var(--primary) !important; }
 
@@ -887,68 +919,90 @@
     align-items: center !important;
     gap: 15px !important;
     min-width: 260px !important;
+    max-width: 260px !important;
     border-left: 1px solid rgba(255, 255, 255, 0.08) !important;
     padding-left: 15px !important;
+    height: 100% !important;
   }
 
-  /* Tahmin Bölümü */
+  /* Eski dikey tahmin alanlarını sıfırla */
+  .match-card .pred-section:not(.finished-pred):not(.no-pred) {
+    display: none !important;
+  }
+
+  /* Yeni Tahmin Bölümü */
   .pred-section {
-    margin-top: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
     display: flex !important;
     flex-direction: column !important;
     gap: 4px !important;
+    background: none !important;
+    border: none !important;
   }
-  .pred-section.finished-pred { font-size: 0.8rem !important; min-width: 110px !important; }
+  .pred-section.finished-pred { font-size: 0.8rem !important; min-width: 110px !important; flex-direction: column !important; align-items: flex-start !important;}
   .pred-section.no-pred { font-size: 0.8rem !important; min-width: 110px !important; }
 
-  .pred-label { font-size: 0.7rem !important; text-transform: uppercase !important; color: #64748b !important; }
-  .pred-inputs { display: flex !important; align-items: center !important; gap: 4px !important; }
+  .pred-label { font-size: 0.7rem !important; text-transform: uppercase !important; color: #64748b !important; display: block !important;}
+  .pred-inputs { display: flex !important; flex-direction: row !important; align-items: center !important; gap: 4px !important; }
   
   .score-input {
-    width: 30px !important;
-    height: 30px !important;
+    width: 32px !important;
+    height: 32px !important;
     font-size: 0.85rem !important;
     border-radius: 4px !important;
     background: #0f141c !important;
+    margin: 0 !important;
+    padding: 0 !important;
   }
-  .score-dash { color: #64748b !important; padding: 0 2px !important; }
+  .score-dash { color: #64748b !important; padding: 0 2px !important; display: inline !important;}
 
   .save-prediction-btn {
     padding: 6px 10px !important;
     font-size: 0.75rem !important;
-    height: 30px !important;
+    height: 32px !important;
     border-radius: 4px !important;
     margin-left: 4px !important;
+    width: auto !important;
   }
 
-  /* Diğer Oyuncuların Tahminleri Bölümü (Sağ tarafta kompakt dikey kaydırma alanı) */
+  /* Diğer Oyuncuların Tahminleri Bölümü */
   .predictions-list {
-    margin-top: 0 !important;
-    padding-top: 0 !important;
-    border-top: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
     flex: 1 !important;
     min-width: 120px !important;
-    max-width: 150px !important;
+    max-width: 130px !important;
+    display: block !important;
+    background: none !important;
   }
 
   .predictions-title {
     font-size: 0.65rem !important;
     color: #64748b !important;
     margin-bottom: 2px !important;
+    display: block !important;
   }
 
   .predictions-scroll-area {
-    max-height: 50px !important; /* İç içe taşmayı önlemek için dikey scroll */
+    max-height: 55px !important;
     overflow-y: auto !important;
     padding-right: 2px !important;
+    display: block !important;
   }
   
-  .predictions-scroll-area::-webkit-scrollbar { width: 3px; }
-  .predictions-scroll-area::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
+  .predictions-scroll-area::-webkit-scrollbar { width: 3px !important; }
+  .predictions-scroll-area::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1) !important; border-radius: 10px !important; }
 
   .prediction-row {
-    padding: 1px 0 !important;
+    padding: 2px 0 !important;
     font-size: 0.75rem !important;
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: space-between !important;
+    border-bottom: 1px solid rgba(255,255,255,0.02) !important;
+    background: none !important;
   }
 }
   </style>
