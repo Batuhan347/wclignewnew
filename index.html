@@ -1776,22 +1776,30 @@ document.getElementById('login-screen').style.display = 'none';
       document.getElementById('matches-container').innerHTML = html || '<div class="empty-state">Maç bulunamadı.</div>';
     }
 
-    function savePrediction(mid) {
-      const hScore = document.getElementById(`pred-h-${mid}`).value;
-      const aScore = document.getElementById(`pred-a-${mid}`).value;
+    ffunction savePrediction(mid) {
+      const hScoreInput = document.getElementById(`pred-h-${mid}`);
+      const aScoreInput = document.getElementById(`pred-a-${mid}`);
 
-      if (hScore === '' || aScore === '') {
-        showToast('Lütfen skor alanlarını doldurun!');
-        return;
-      }
+      if (!hScoreInput || !aScoreInput) {
+        showToast('Girdi alanları bulunamadı!');
+        return;
+      }
 
-      database.ref(`predictions/${currentUser.id}/${mid}`).set({
-        hScore: hScore,
-        aScore: aScore
-      }).then(() => {
-        showToast('Tahmininiz başarıyla kaydedildi!');
-      });
-    }
+      const hScore = hScoreInput.value;
+      const aScore = aScoreInput.value;
+
+      if (hScore === '' || aScore === '') {
+        showToast('Lütfen skor alanlarını doldurun!');
+        return;
+      }
+
+      database.ref(`predictions/${currentUser.id}/${mid}`).set({
+        hScore: hScore,
+        aScore: aScore
+      }).then(() => {
+        showToast('Tahmininiz başarıyla kaydedildi!');
+      });
+    }
 
     // ==================== RENDER RESULTS TAB ====================
     function renderResults() {
