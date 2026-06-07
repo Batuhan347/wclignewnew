@@ -1175,14 +1175,16 @@
     }
 
     function renderLeaderboard() {
-      const leaderboardBody = document.getElementById('leaderboard-body');
-      if (!leaderboardBody) return;
+      const container = document.getElementById('leaderboard-container') || document.getElementById('leaderboard-list');
+      if (!container) return;
 
       let playersStats = [];
+      // Koyu temaya uygun, gözü yormayan pastel arka plan renkleri (Harf ikonları için)
+      const avatarColors = ['#1e293b', '#2d3748', '#1a202c', '#2c3e50', '#23272a'];
 
-      Object.keys(appData.players).forEach(uid => {
+      Object.keys(appData.players).forEach((uid, i) => {
         const player = appData.players[uid];
-        if (!player || !player.name || player.name === "Admin") return;
+        if (!player || !player.name || player.name.toLowerCase() === "admin" || player.name === "undefined") return;
 
         let oynanan = 0;
         let dogruTahmin = 0;
@@ -1198,7 +1200,7 @@
             if (appData.results && appData.results[mid]) {
               const res = appData.results[mid];
               
-              if (pred.hScore === undefined || pred.aScore === undefined || res.hScore === undefined || res.aScore === undefined) return;
+              if (!pred || pred.hScore === undefined || pred.aScore === undefined || !res || res.hScore === undefined || res.aScore === undefined) return;
               if (pred.hScore === '' || pred.aScore === '' || res.hScore === '' || res.aScore === '') return;
 
               oynanan++;
@@ -1224,13 +1226,20 @@
           });
         }
 
+        let av = oynanan > 0 ? (toplamPuan / oynanan).toFixed(2) : "0.00";
+        let firstLetter = player.name.trim().charAt(0).toUpperCase();
+        let avatarBg = avatarColors[i % avatarColors.length];
+
         playersStats.push({
           name: player.name,
+          firstLetter: firstLetter,
+          avatarBg: avatarBg,
           O: oynanan,
           DT: dogruTahmin,
           KB: kazananBeraberlik,
           BM: bilemedi,
-          P: toplamPuan
+          P: toplamPuan,
+          AV: av
         });
       });
 
@@ -1239,25 +1248,78 @@
         return b.DT - a.DT; 
       });
 
-      let html = '';
-      playersStats.forEach((p, index) => {
-        let rowStyle = '';
-        if (index === 0) rowStyle = 'style="background: rgba(234, 179, 8, 0.05);"'; 
-        
-        html += `
-          <tr ${rowStyle}>
-            <td style="text-align: center; font-weight: bold; color: var(--primary);">${index + 1}</td>
-            <td style="font-weight: 600;">${p.name}</td>
-            <td style="text-align: center;">${p.O}</td>
-            <td style="text-align: center; color: #22c55e; font-weight: bold;">${p.DT}</td>
-            <td style="text-align: center; color: var(--primary);">${p.KB}</td>
-            <td style="text-align: center; color: var(--danger);">${p.BM}</td>
-            <td style="text-align: center; font-weight: bold; color: #fff; background: rgba(255,255,255,0.03);">${p.P}</td>
-          </tr>
-        `;
-      });
+      // Mevcut CSS değişkenlerine (--dark-border, --dark-muted vb.) uyumlu HTML yapısı
+      let tableHtml = `
+        <div class="card" style="padding: 20px; font-family: sans-serif;">
+          <div style="display: flex; align-items: center; gap: 8px; font-size: 1.1rem; font-weight: 700; margin-bottom: 20px;">
+            <span>🏆</span> Oyuncu Sıralaması
+          </div>
+          
+          <div style="overflow-x: auto;">
+            <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.9rem;">
+              <thead>
+                <tr style="color: var(--dark-muted, #94a3b8); border-bottom: 1.5px solid var(--dark-border, #2d3748); text-transform: uppercase; font-size: 0.75rem; font-weight: 700;">
+                  <th style="padding: 12px 8px; width: 50px; text-align: center;"></th>
+                  <th style="padding: 12px 8px;">OYUNCU</th>
+                  <th style="padding: 12px 8px; text-align: center; width: 60px;">P</th>
+                  <th style="padding: 12px 8px; text-align: center; width: 60px;">O</th>
+                  <th style="padding: 12px 8px; text-align: center; width: 60px;">TS</th>
+                  <th style="padding: 12px 8px; text-align: center; width: 60px;">K/B</th>
+                  <th style="padding: 12px 8px; text-align: center; width: 60px;">Y</th>
+                  <th style="padding: 12px 8px; text-align: center; width: 70px;">AV</th>
+                </tr>
+              </thead>
+              <tbody>
+      `;
 
-      leaderboardBody.innerHTML = html || '<tr><td colspan="7" style="text-align:center; color:var(--dark-muted);">Henüz kayıtlı oyuncu veya tamamlanmış maç yok.</td></tr>';
+      if (playersStats.length === 0) {
+        tableHtml += `<tr><td colspan="8" style="text-align:center; padding:30px; color: var(--dark-muted);">Henüz kayıtlı aktif oyuncu bulunmuyor.</td></tr>`;
+      } else {
+        playersStats.forEach((p, index) => {
+          let rankDisplay = index + 1;
+          if (index === 0) rankDisplay = '<span style="font-size:1.2rem;">🥇</span>';
+          if (index === 1) rankDisplay = '<span style="font-size:1.2rem;">🥈</span>';
+          if (index === 2) rankDisplay = '<span style="font-size:1.2rem;">🥉</span>';
+
+          tableHtml += `
+            <tr style="border-bottom: 1px solid var(--dark-border, rgba(255,255,255,0.05));">
+              <td style="padding: 14px 8px; text-align: center; font-weight: bold; color: var(--dark-muted);">${rankDisplay}</td>
+              <td style="padding: 14px 8px;">
+                <div style="display: flex; align-items: center; gap: 12px;">
+                  <div style="width: 34px; height: 34px; border-radius: 50%; background: ${p.avatarBg}; color: #38bdf8; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.1);">
+                    ${p.firstLetter}
+                  </div>
+                  <span style="font-weight: 600;">${p.name}</span>
+                </div>
+              </td>
+              <td style="padding: 14px 8px; text-align: center; font-weight: 700; color: #22c55e;">${p.P}</td>
+              <td style="padding: 14px 8px; text-align: center;">${p.O}</td>
+              <td style="padding: 14px 8px; text-align: center;">${p.DT}</td>
+              <td style="padding: 14px 8px; text-align: center;">${p.KB}</td>
+              <td style="padding: 14px 8px; text-align: center;">${p.BM}</td>
+              <td style="padding: 14px 8px; text-align: center; font-weight: 600; color: var(--primary, #38bdf8);">${p.AV}</td>
+            </tr>
+          `;
+        });
+      }
+
+      tableHtml += `
+              </tbody>
+            </table>
+          </div>
+          
+          <div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid var(--dark-border, rgba(255,255,255,0.05)); display: flex; flex-wrap: wrap; gap: 16px; font-size: 0.78rem; color: var(--dark-muted, #94a3b8); line-height: 1.5;">
+            <div><b>P</b> = Puan</div>
+            <div><b>O</b> = Oynanan (Tahmin sayısı)</div>
+            <div><b>TS</b> = Tam Skor (3 puan)</div>
+            <div><b>K/B</b> = Kazanan/Beraberlik (1 puan)</div>
+            <div><b>Y</b> = Yanlış (0 puan)</div>
+            <div><b>AV</b> = Puan Ortalaması</div>
+          </div>
+        </div>
+      `;
+
+      container.innerHTML = tableHtml;
     }
 
     // ==================== TAB MANAGEMENT ====================
