@@ -1836,7 +1836,7 @@ document.getElementById('login-screen').style.display = 'none';
             let ptsClass = 'points-0';
             const rH = parseInt(realResult.hScore); const rA = parseInt(realResult.aScore);
             const pH = parseInt(userPred.hScore); const pA = parseInt(userPred.aScore);
-            if (rH === pH && rA === pA) { pts = 3; ptsClass = 'points-3'; }
+            if (rH === pH && rA === pA) { pts = 2; ptsClass = 'points-3'; }
             else if ((rH > rA && pH > pA) || (rH < rA && pA > pH) || (rH === rA && pH === pA)) { pts = 1; ptsClass = 'points-1'; }
             
             predInputHtml = `
